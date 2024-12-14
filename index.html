@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>未來圖書館</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            body {
+              background-image: url('background.jpg');
+              color: white; 
+              display: flex;
+              background-position: auto;
+              background-size: cover;
+              justify-content: center;
+              align-items: center;
+              overflow-x: auto;
+            }
+
+            button{
+                font-size: 150%;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column; 
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                z-index: 995;
+                height:100%;
+            }
+
+            .container_row {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .side-image {
+                display: flex;
+                flex-direction: row;
+                margin: 20 20px; 
+            }
+
+            .box {
+                display: none;
+                width: 50%; /* 設定框框的寬度為 80% */
+                margin: 0 auto; /* 讓框框水平置中 */
+                border: 0px #ccc; /* 加入邊框以示範 */
+                overflow: hidden; /* 清除浮動 */
+                font-size: 161%;
+            }
+
+            .conscious {
+                flex: 1;
+                float: left; /* 讓元素浮動在左側 */
+                box-sizing: border-box; /* 考慮邊框和內邊距在內，使得設定寬度更符合期望 */
+                border: 0px solid #ddd; /* 加入邊框以示範 */
+                padding: 5px; /* 加入內邊距以示範 */
+                text-align: center;
+            }
+
+            .box1 {
+                display: none;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                width: auto;
+                height: auto;
+            }
+
+            .box3 {
+                display: none;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                width: auto;
+                height: auto;
+            }
+
+            .center {
+                grid-column: span 2;
+                grid-row: span 2;
+                text-align: center;
+                font-size: 115%;
+            }
+
+            .outer {
+                grid-column: span 1;
+                grid-row: span 1;     
+                text-align: center;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 115%;
+            }
+
+            #interpret {
+                position: absolute;
+                display: none;
+                width: auto;
+                height: auto;
+                background-color: blue;
+                color: white;
+                border-radius: 50%;
+                text-align: center;
+                z-index: 994;
+                font-size: 115%;
+            }
+
+            .box2 {
+                display: none;
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                margin:10px;
+                width: auto;
+                height: auto;
+                font-size: 120%;
+            }
+
+            .block {
+                display: flex; /* 将外部元素设置为 Flexbox 布局 */
+                justify-content: center; /* 在水平方向居中 */
+                align-items: flex-end; /* 在垂直方向居中 */
+                border-radius: 5px;
+            }
+
+            .bar {
+                width: 50%;
+                background-color: yellow;
+                
+            }
+
+            .element{
+                justify-content: center; /* 在水平方向居中 */
+                align-items: flex-start; /* 在垂直方向居中 */
+                text-align: center;
+                margin:1vw;
+            }
+
+            .headline {
+                display: flex;
+                flex-direction: column; 
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+            }
+
+            .savewhich{
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            #historydata{
+                display: block;
+                z-index: 993;
+            }
+            table {
+                border-collapse: collapse;
+                width: 60vw;
+                margin: 10px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 8px;
+            }
+            th {
+                background-color: #000000;
+            }
+            #selection{
+                font-size: 140%;
+            }
+            #flowyearnum{
+                font-size: 140%;
+            }
+            #result {
+                font-size: 115%;
+            }
+        </style>
+</head>
+<body>
+    <style>
+        p{
+            margin: 0;
+            font-size: 140%;
+        }
+
+        input{
+            font-size: 180%;
+        }
+
+        #auth-container{
+            flex-direction: column;
+            text-align: center;
+            z-index: 996;
+        }
+        #registration-form{
+            flex-direction: column;
+        }
+    </style>
+    <section>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </section>
+
+    <div id="auth-container">
+        <h2 style="position:fixed;top:5%;left:5%">登入帳號</h2>
+        <button id="registAndloginButton" onclick="toggleAuthForm()" style="position:fixed;top:11%;left:5%;">登入</button>
+        <div id="auth-form-container" style="display: none;">
+            <!-- 登入表單 -->
+            <div id="login-form">
+                <h3>登入</h3>
+                <input type="email" id="login-email" placeholder="Email">
+                <br>
+                <input type="password" id="login-password" placeholder="Password">
+                <h3></h3>
+                <button onclick="login()" id = "login">登入</button>
+                <button onclick="logout()" id = "logout">登出</button>
+                <h3></h3>
+                <h3>註冊</h3>
+                <input type="email" id="reg-email" placeholder="Email">
+                <br>
+                <input type="password" id="reg-password" placeholder="Password">
+                <h3></h3>
+                <button onclick="register()">註冊</button>
+            </div>
+            <div id="reset-form">
+                <h3>重設密碼</h3>
+                <input type="email" id="reset-email" placeholder="輸入接收Email">
+                <h3></h3>
+                <button onclick="reset()" id = "reset">重設</button>
+            </div>
+            <h3></h3>
+            <div id="message" style="color : yellow" ></div>
+        </div>
+    </div>
+    <button id="datatable" onclick="toggleDataForm()" style="position:fixed;top:11%;right:5%;">顯示資料</button>
+    <div id="historydata" style="display: block;">
+        <table id="dynamicTable">
+            <thead>
+                <tr>
+                    <th>編號</th>
+                    <th>卡牌</th>
+                    <th>時間</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+        <button id="backtoinput" onclick="toggleDataForm()" style="position:fixed;top:11%;right:5%;">返回</button>
+    </div>
+    <div class="container">
+        <div class="headline">
+            <p >能一眼洞悉</p>   
+            <p>身邊愛人、親人、朋友、上司、下屬</p> 
+            <p>內心真正想說的話、在做的事、真假虛偽。</p>
+            <br>
+            <p>能找到</p>
+            <p>真正屬於自己最拿手的能力</p>  
+            <p>知道如何使用、如何改變困局</p>
+            <p>活出實實在在的夢想生活</p>  
+        </div>
+        <div class="container_row">
+            <div class="side-image">
+                <img src="try.png" alt="Side Image" width="350">
+            </div>
+            <form onsubmit="event.preventDefault();" id="cal_input">
+                <input type="text" id="name" placeholder="輸入姓名" required>
+                <br>
+                <input type="text" id="year" placeholder="輸入出生年" required>
+                <br>
+                <input type="text" id = "month" placeholder="輸入出生月" required>
+                <br>
+                <input type="text" id = "day" placeholder="輸入出生日" required>
+                <br>
+                <input type="text" id = "hour" placeholder="輸入出生時辰(24小時制)" >
+                <br>
+                <input type="text" id = "minute" placeholder="輸入出生時辰(分)" >
+                <br>
+                <button id = "button1" onclick="calculate(true)">計算</button>
+            </form>
+            <button id = "button2" style="display: none;">重來</button>
+            <div class="side-image">
+                <img src="try.png" alt="Side Image" width="350">
+            </div>
+        </div>    
+        <div class="box">
+            <div class="conscious" id = "subconscious"></div>
+            <div class="conscious" id = "noconscious"></div>
+        </div>
+        <br>
+        <div id="result"></div>
+        <br>
+        <div id = "interpret"></div>
+        <div id="introduce"></div>
+        <div class="box1">
+            <!-- Top Row -->
+            <div class="outer" id = "1"></div>
+            <div class="outer" id = "2"></div>
+            <div class="outer" id = "3"></div>
+            <div class="outer" id = "4"></div>
+            <!-- Middle Row -->
+            <div class="outer" id = "5"></div>
+            <!-- Center -->
+            <div class="center" id = "0"></div>
+            <!-- Middle Row -->
+            <div class="outer" id = "6"></div>
+            <div class="outer" id = "7"></div>
+            <div class="outer" id = "8"></div>
+            <!-- Bottom Row -->
+            <div class="outer" id = "9"></div>
+            <div class="outer" id = "11"></div>
+            <div class="outer" id = "12"></div>
+            <div class="outer" id = "10"></div>
+        </div>
+        <div class="box3">
+            <!-- Top Row -->
+            <div class="outer" id = "14"></div>
+            <div class="outer" id = "15"></div>
+            <div class="outer" id = "16"></div>
+            <!-- Middle Row -->
+            <div class="outer" id = "17"></div>
+            <div class="outer" id = "13"></div>
+            <div class="outer" id = "18"></div>
+            <!-- Bottom Row -->
+            <div class="outer" id = "19"></div>
+            <div class="outer" id = "20"></div>
+            <div class="outer" id = "21"></div>
+        </div>
+        <br>
+        <br>
+        <div class="box2">
+            <!-- Top Row -->
+            <div class="block" >
+                <div class="bar" id = "block1"></div>
+            </div>
+            <div class="block" >
+                <div class="bar" id = "block2"></div>
+            </div>
+            <div class="block" >
+                <div class="bar" id = "block3"></div>
+            </div>
+            <div class="block" >
+                <div class="bar" id = "block4"></div>
+            </div>
+            <!-- Bottom Row -->
+            <div class="element" id = "wind"></div>
+            <div class="element" id = "water"></div>
+            <div class="element" id = "fire"></div>
+            <div class="element" id = "dirt"></div>
+        </div>
+        <div id = "flowyearnum"></div>
+        <form class="savewhich" onsubmit="event.preventDefault();" id="which_input">
+            <select id="selection">
+                <option value="first" id="Option1">1</option>
+                <option value="second" id="Option2">2</option>
+                <option value="third" id="Option3">3</option>
+                <option value="forth" id="Option4">4</option>
+                <option value="fifth" id="Option5">5</option>
+                <option value="sixth" id="Option6">6</option>
+                <option value="seventh" id="Option7">7</option>
+                <option value="eighth" id="Option8">8</option>
+                <option value="ninth" id="Option9">9</option>
+                <option value="tenth" id="Option10">10</option>
+            </select>
+            <br>
+            <button type="submit" style="font-size: 100%; display: flex;" id="showButton" onclick="showResult()">顯示</button>
+            <button type="submit" style="font-size: 100%; display: none;" id="saveButton" onclick="writeData()">儲存</button>
+        </form>
+        <br>
+        <a href="https://meet.eslite.com/tw/tc/article/202403290005" style="color: yellow;" target="_blank" id="fb">塔羅牌解釋</a>
+    </div>  
+    <script>
+        var user = 0;
+        function calculate(newinput) {
+            var foreveryone = false;
+            var num1 = parseInt(document.getElementById('year').value);
+            var num2 = parseInt(document.getElementById('month').value);
+            var num3 = parseInt(document.getElementById('day').value);
+            var person = document.getElementById('name').value;
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear();
+            var flag = false;
+            if (num1 < 0 || num1 > currentYear || num2 > 12 || num2 < 1 || num3 > 31 || num3 < 1) {
+                document.getElementById('result').innerHTML = '結果: 輸入錯誤生日';
+                flag = true;
+            }else if(isNaN(num1)||isNaN(num2)||isNaN(num3)){
+                document.getElementById('result').innerHTML = '結果: 未輸入完整';
+                flag = true;
+            }
+            if(flag){
+                clear();
+                $("#cal_input").fadeOut();
+                return;
+            }
+            if(num1<1000)
+                num1+=1911;
+            var god = [0, 0, 0, 0, 0, 0, 0, 0];
+            var element = [0, 0, 0, 0, 0];
+            const element_name = ["風","水","火","土"];
+            if(num3>22){
+                god[1]=num3;
+                while(god[1]>=10){
+                    god[1]=Math.floor(god[1]/10+god[1]%10);
+                }
+            }else {
+                god[1] = num3%22;
+            }
+            var yeardiv = 0;
+            var temp = num1;
+            var temp2;
+            var temp3;
+            while(temp>0){
+                yeardiv+=temp%10;
+                temp=Math.floor(temp/10);
+            }      
+            god[2] = (yeardiv+num2+num3)%22;
+            god[0] = yeardiv;
+            if(num2>9) god[0] += Math.floor(num2/10+num2%10);
+            else god[0] += num2;
+            if(num3>9) god[0] +=Math.floor(num3/10+num3%10);
+            else god[0] += num3;
+            god[0]%=22;
+            
+            /*const myArray = ["愚者","魔術師","女祭司","皇后","國王","教皇","戀人","戰車","力量","隱者","命運之輪","正義","吊人",
+    "死神","節制","惡魔","塔","星星","月亮","太陽","審判","世界"];*/
+            const attributes = [0, 0, 1, 1, 2, 3, 0, 1, 2, 3, 3, 0, 1, 1, 2, 3, 2, 0, 1, 2, 0, 3];
+            const god_name =  ["Dionysus","Hermes","Hera","Aphrodite/Vinus","Mars","Demeter","Eros","Hestia","Heracross","Artemis","Zeus","Athena",
+            "Poseidon/Neptune","Achilles","Prometheus","Oedipus","Hephaestus","Zephyros","Perciphen","Apollo","Hades","Kronos"];
+            var list = [0,31,59,90,120,151,181,212,243,273,304,334];
+            god[3] = (list[num2-1]+num3)%22;
+            god[4] = (god[3]+21)%22;
+            god[5] = (god[3]+1)%22;
+            temp = currentYear-1+num2+num3;
+            while(temp>0){
+                god[6]+=temp%10;
+                temp=Math.floor(temp/10);
+            }
+            temp = currentYear+num2+num3;
+            while(temp>0){
+                god[7]+=temp%10;
+                temp=Math.floor(temp/10);
+            }
+            temp2 = num2;
+            temp3 = num3-1;
+            if(num3==1){
+                temp2--;
+                switch(temp2){
+                    case 0:
+                        temp2 = 12;
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        temp3 = 31;
+                        break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        temp3 = 30;
+                        break;
+                    case 2:
+                        temp3 = 28;
+                        break;
+                }
+            }    
+            var flowyear = 0;
+            temp = num1;
+            while(temp>0){
+                flowyear+=temp%10;
+                temp=Math.floor(temp/10);
+            }temp = num2;
+            while(temp>0){
+                flowyear+=temp%10;
+                temp=Math.floor(temp/10);
+            }temp = num3;
+            while(temp>0){
+                flowyear+=temp%10;
+                temp=Math.floor(temp/10);
+            }
+            var  twoDimArray = [
+                [1, 10, 19],
+                [2, 11, 20],
+                [3, 12, 21],
+                [4, 13, 0],
+                [5, 14],
+                [6, 15],
+                [7, 16],
+                [8, 17],
+                [9, 18],
+            ];
+            var booleanArray = Array.from({ length: 23 }).map(() => false);
+            while(flowyear>=10){
+                if(flowyear<=22)
+                    booleanArray[flowyear%22] = true;
+                flowyear = Math.floor(flowyear/10+flowyear%10);
+            }
+            booleanArray[flowyear%22] = true;
+            var num4 = parseInt(document.getElementById('hour').value);
+            var num5 = parseInt(document.getElementById('minute').value); 
+            var plant = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+            var plant_name = ["本命循環","精神內在","學習＆傳達","戀情＆人際關係","行動＆創造","生命格局","傳統＆制約","創意＆自由","愛與藝術","靈性發展",
+        "特質＆形象","良善＆美德","節制＆特質"];
+            plant[0] = god[0];
+            plant[1] = (num2+num3)%22;
+            plant[2] = num3%22;
+            plant[3] = (plant[0] + num3)%22;
+            plant[4] = (plant[0] - num3 + 66)%22;
+            plant[5] = (plant[0] + num2)%22;
+            plant[6] = (plant[0] - num2 + 66)%22;
+            plant[7] = (plant[0] + yeardiv)%22;
+            plant[8] = (plant[0] - yeardiv + 66)%22;
+            plant[9] = (plant[0] + num4)%22;
+            plant[10] = (plant[0] - num4 + 66)%22;
+            plant[11] = (plant[0] + num5)%22;
+            plant[12] = (plant[0] - num5 + 66 )%22;
+            if(user||foreveryone){
+                document.getElementById('introduce').innerHTML = "<p style='color: AQUA;'>大整合盤 "+num1+"/"+num2+"/"+num3+" "+person+":</p>";
+                document.getElementById('result').innerHTML = "<p>能量流: </p>";
+                for(let i=1;i<6;i++){     
+                    document.getElementById('result').innerHTML += "<p style='color: Yellow;'>"+" "+god[i] + " " + god_name[god[i]]+"</p>";
+                }
+                document.getElementById('subconscious').innerHTML = "以太數:";
+                for(let i=0;i<twoDimArray[flowyear-1].length;i++){
+                    if(booleanArray[twoDimArray[flowyear-1][i]]==true){
+                        document.getElementById('subconscious').innerHTML += "<p style='color:Yellow;font-size: 100%;'>" + twoDimArray[flowyear-1][i]+"</p>";
+                    } 
+                }
+                document.getElementById('noconscious').innerHTML = "隱藏數:";
+                for(let i=0;i<twoDimArray[flowyear-1].length;i++){
+                    if(booleanArray[twoDimArray[flowyear-1][i]]==false){
+                        document.getElementById('noconscious').innerHTML += "<p style='color:Yellow;font-size: 100%;'>" + twoDimArray[flowyear-1][i]+"</p>";
+                    } 
+                }
+                document.getElementById('result').innerHTML += "<br>";
+
+                if(isNaN(num4)&&isNaN(num5)){
+                    for (var i = 0; i < 9; i++) {
+                        var elementId = (i+13).toString(); 
+                        document.getElementById(elementId).innerHTML = "<p style='margin: 0;'>"+plant_name[i]+": "+"</p>";
+                        document.getElementById(elementId).innerHTML += "<p style='color: Yellow; margin: 0;'>" + plant[i] +"</p>";
+                    }
+                    document.querySelector('.box3').style.display = 'grid';
+                }else {
+                    for (var i = 0; i < 13; i++) {
+                        var elementId = i.toString(); 
+                        if(!isNaN(plant[i])){
+                            document.getElementById(elementId).innerHTML = "<p style='margin: 0;'>"+plant_name[i]+": "+"</p>";
+                            document.getElementById(elementId).innerHTML += "<p style='color: Yellow; margin: 0;'>" + plant[i] +"</p>";
+                        }else {
+                            document.getElementById(elementId).innerHTML = "";
+                        }
+                    }
+                    document.querySelector('.box1').style.display = 'grid';
+                }
+                
+                document.getElementById('result').innerHTML += "<br>";
+                
+                document.querySelector('.box').style.display = 'flex';
+
+                document.getElementById('button2').style.display = 'flex';
+
+                document.getElementById('flowyearnum').innerHTML = "<br><p>流年數: </p>" +
+                    "<p style='display:inline-block;'>"+(currentYear-1)+"/"+num2+"/"+num3+"~"+currentYear+"/"+temp2+"/"+temp3+" : </p>"+
+                    "<p style='color: Yellow; display:inline-block;'>" + god[6] + "</p><br>"+ 
+                    "<p style='display:inline-block;'>"+currentYear+"/"+num2+"/"+num3+"~"+(currentYear+1)+"/"+temp2+"/"+temp3+" : </p>"+
+                    "<p style='color: Yellow; display:inline-block;'>" + god[7] + "</p>";
+            }else {
+                clear();
+                $("#cal_input").fadeOut();
+            }
+            for(let i=0;i<6;i++){     
+                element[attributes[god[i]]]++;
+                element[4]++;
+            }
+            for(let i=0;i<twoDimArray[flowyear-1].length;i++){
+                if(booleanArray[twoDimArray[flowyear-1][i]]==true){
+                    element[attributes[twoDimArray[flowyear-1][i]]]++;
+                    element[4]++;
+                } 
+            }
+            document.getElementById('wind').innerHTML ="風"+"<p style='color: Yellow;'>"+(element[0]*100/element[4]).toFixed(1)+'%'+"</p>";
+            document.getElementById('water').innerHTML ="水"+"<p style='color: Yellow;'>"+(element[1]*100/element[4]).toFixed(1)+'%'+"</p>";
+            document.getElementById('fire').innerHTML ="火"+"<p style='color: Yellow;'>"+(element[2]*100/element[4]).toFixed(1)+'%'+"</p>";
+            document.getElementById('dirt').innerHTML ="土"+"<p style='color: Yellow;'>"+(element[3]*100/element[4]).toFixed(1)+'%'+"</p>";
+            var four = 0,energe;
+            for(let i = 0;i<4;i++){
+                if((element[i]*100/element[4])>four){
+                    four = (element[i]*100/element[4]);
+                    energe = i;
+                } 
+            }
+            if(energe == 0) energe = "wind";
+            else if(energe == 1) energe = "water";
+            else if(energe == 2) energe = "fire";
+            else energe = "dirt";
+            document.querySelector('.box2').style.display = 'grid';
+            for(let i = 1; i < 5;i++){
+                var h = (element[i-1]*100/element[4]).toFixed(1)*2;
+                document.getElementById('block'+i).style.height = h +'px';
+            }
+            document.querySelector('.box2').style.display = 'grid';
+            if(newinput)addReading(god[7]);
+        }   
+
+    </script>
+    <script>  
+    
+
+      function clear(){
+            document.getElementById('introduce').innerHTML = '';
+            document.getElementById('flowyearnum').innerHTML = '';
+            document.querySelector('.box').style.display = 'none';
+            document.querySelector('.box1').style.display = 'none';
+            document.querySelector('.box2').style.display = 'none';
+            document.querySelector('.box3').style.display = 'none';
+            document.getElementById('button2').style.display = 'flex';
+      }
+
+      async function register(){
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+                // 檢查欄位是否為空
+        if (!email || !password) {
+            showMessage('所有欄位均為必填');
+            return;
+        }
+        try {
+            // 發送 POST 請求到後端
+            const response = await fetch("https://067d-219-68-42-104.ngrok-free.app/api/SignUp", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning":"true",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            // 處理回應
+            const result = await response.json();
+
+            if (response.ok) {
+            // 成功註冊，顯示訊息
+            showMessage('帳號創建成功');
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-password').value = '';
+            } else {
+            // 出現錯誤，顯示錯誤訊息
+            showMessaget('伺服器錯誤');
+            }
+        } catch (err) {
+            showMessage('註冊過程中發生錯誤');
+        }
+      }
+
+      async function login() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        // 驗證欄位是否完整
+        if (!email || !password) {
+            showMessage('請填寫所有欄位');
+            return;
+        }
+
+        try {
+            // 發送 POST 請求到後端 API
+            const response = await fetch("https://067d-219-68-42-104.ngrok-free.app/api/SignIn", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning":"true",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            // 解析回應結果
+            const result = await response.json();
+
+            if (response.ok) {
+                // 登入成功處理
+                showMessage('登入成功');
+                console.log('登入成功');
+                user = result.uid;
+                $("#login").hide();
+                $("#logout").show();
+                $("#resetpassword").show();
+                toggleAuthForm();
+                getdata();
+                document.querySelector('.savewhich').style.display = 'flex';
+            } else {
+                // 登入失敗處理
+                showMessage('登入失敗');
+            }
+        } catch (error) {
+            console.error('登出過程中發生錯誤:', err);
+            showMessage('伺服器錯誤，請稍後再試');
+            
+        }
+      }
+
+      async function getdata(){
+        const UID = user;
+        try {
+            const response = await fetch("https://067d-219-68-42-104.ngrok-free.app/api/getUserData", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning":"true",
+                },
+                body: JSON.stringify({ UID }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            for(let len = 0; len < result.length; len++){
+                updateButton(result[len].position,result[len].Name,result[len].YearOfBirth,result[len].MonthOfBirth,result[len].DayOfBirth);
+            }
+        } 
+        } catch (err) {
+            console.error('獲取資料過程中發生錯誤:', err.message);
+        }
+      }
+
+      async function logout() {
+        window.location.reload();
+        /*try {
+            // 發送 POST 請求到登出 API
+            const response = await fetch("https://01b3-219-68-42-104.ngrok-free.app/api/SignOut", {
+            method: 'POST',
+            headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning":"true",
+            },
+        });
+
+        // 解析伺服器回應
+        const result = await response.json();
+
+        if (response.ok) {
+            showMessage('已成功登出');
+            for(let i = 1;i<=5;i++){
+                resetButton(i);
+            }
+            clear();
+            $("#login").show();
+            $("#logout").hide();
+            $("#resetpassword").hide();
+            document.querySelector('.savewhich').style.display = 'none';
+            document.getElementById('result').innerHTML = '';
+        } else {
+            showMessage(`登出失敗`);
+        }
+        } catch (err) {
+            showMessage('登出過程中發生錯誤');
+        }*/
+      }
+
+      function showMessage(message) {
+        document.getElementById('message').innerText = message;
+        setTimeout(function () {
+          document.getElementById('message').innerText = "";
+        }, 3000);
+      }
+    
+      function toggleAuthForm() {
+        const authFormContainer = document.getElementById('auth-form-container');
+        const registLoginButton = document.getElementById('registAndloginButton');
+        if (authFormContainer.style.display == 'none') {
+            // 顯示表單，隱藏註冊/登入按鈕，顯示返回按鈕
+            authFormContainer.style.display = 'block';
+            registLoginButton.innerHTML = '返回';
+            $('.container').hide();
+        } else {
+            // 收回表單，顯示註冊/登入按鈕，隱藏返回按鈕
+            authFormContainer.style.display = 'none';
+            registLoginButton.innerHTML = '登入';
+            $('.container').show();
+            if(user){
+                registLoginButton.innerHTML = '已登入';
+            }
+        }
+      }
+      function toggleDataForm(){
+        const tableContainer = document.getElementById('historydata');
+        const authContainer = document.getElementById('auth-container');
+        if(tableContainer.style.display == 'none'){
+            tableContainer.style.display = 'block';
+            authContainer.style.display = 'none';
+            $("#datatable").hide();
+            $('.container').hide();
+            historicalData();
+        }else {
+            tableContainer.style.display = 'none';
+            authContainer.style.display = 'flex';
+            $('.container').show();
+            $("#datatable").show();
+            const table = document.getElementById('dynamicTable').getElementsByTagName('tbody')[0];
+            const rows = table.getElementsByTagName('tr');
+            while (rows.length > 0) {
+                table.deleteRow(0);
+            }
+        }
+      }
+
+      //寫入計算結果
+      async function writeData(){
+        if (user) {  
+          const position = document.getElementById('selection').selectedIndex+1;
+          const UID = user;
+          const Name = document.getElementById("name").value;
+          const YearOfBirth = document.getElementById("year").value;
+          const MonthOfBirth = document.getElementById("month").value;
+          const DayOfBirth = document.getElementById("day").value;
+          const HourOfBirth = document.getElementById('hour').value;
+          const MinOfBirth = document.getElementById('minute').value;
+          try {
+            // 發送 POST 請求到後端
+            const response = await fetch('https://067d-219-68-42-104.ngrok-free.app/api/insertData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "ngrok-skip-browser-warning":"true",
+                },
+                body: JSON.stringify({
+                    position,
+                    UID,
+                    Name,
+                    YearOfBirth,
+                    MonthOfBirth,
+                    DayOfBirth,
+                    HourOfBirth,
+                    MinOfBirth,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                updateButton(position,document.getElementById("name").value, document.getElementById("year").value, document.getElementById("month").value, document.getElementById("day").value);
+            } 
+            } 
+            catch (err) {
+                console.error('資料插入過程中發生錯誤');
+            }
+        }
+      }
+
+      //取得計算結果
+      async function showResult() {
+        const position = document.getElementById('selection').selectedIndex+1;
+        const UID = user;
+        if(user){
+            document.getElementById('button2').style.display = 'flex';
+            try {
+                const response = await fetch('https://067d-219-68-42-104.ngrok-free.app/api/getUserPositionData', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning":"true",
+                    },
+                    body: JSON.stringify({ UID, position }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log('獲取資料成功:', result);
+                    document.getElementById("name").value = result.Name;
+                    document.getElementById("year").value = result.YearOfBirth;
+                    document.getElementById("month").value = result.MonthOfBirth;
+                    document.getElementById("day").value = result.DayOfBirth;
+                    document.getElementById("hour").value = result.HourOfBirth;
+                    document.getElementById("minute").value = result.MinOfBirth;
+                    calculate(false);
+                    showMessage(`顯示結果`);
+                } else {
+                    console.error('錯誤:', result.error);
+                }
+            } catch (err) {
+                console.error('獲取資料過程中發生錯誤:', err);
+            }
+        }
+    }
+
+    async function addReading(card){
+        const CardID = card;
+        const UID = user;
+        if(user){
+            try {
+                const response = await fetch('https://067d-219-68-42-104.ngrok-free.app/api/addReading', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning":"true",
+                    },
+                    body: JSON.stringify({ CardID, UID }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    console.log('儲存資料成功:', result);
+                } else {
+                    console.error('錯誤:', result.error);
+                }
+            } catch (err) {
+                console.error('獲取資料過程中發生錯誤:', err);
+            }
+        }
+    }
+
+    async function historicalData(){
+        const UID = user;
+        if(user){
+            try {
+                const response = await fetch('https://067d-219-68-42-104.ngrok-free.app/api/getReadingData', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning":"true",
+                    },
+                    body: JSON.stringify({ UID }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    const table = document.getElementById('dynamicTable').getElementsByTagName('tbody')[0];
+                    console.log('取得資料成功:', result);
+                    for(let len=0;len < result.length; len++){
+                        const newRow = table.insertRow();
+                        // 新增行中的每個單元格
+                        const cell1 = newRow.insertCell(0);
+                        const cell2 = newRow.insertCell(1);
+                        const cell3 = newRow.insertCell(2);
+
+                        // 填充內容
+                        cell1.textContent = result[len].ReadingID;
+                        cell2.textContent = result[len].CardID;
+                        cell3.textContent = result[len].ReadingTime;
+                    }
+                } else {
+                    console.error('錯誤:', result.error);
+                }
+            } catch (err) {
+                console.error('獲取資料過程中發生錯誤:', err);
+            }
+        }
+    }
+
+      
+      function updateButton(number,name, year, month, day) {
+            var Option = document.getElementById('Option'+number);
+            Option.textContent = name + ": " + year + "/" + month + "/" + day;
+      }
+
+      function resetButton(number) {
+            var Option = document.getElementById('Option'+number);
+            Option.textContent = number;
+      }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#logout").hide();
+            $("#reset-form").hide();
+            $("#historydata").hide();
+            if (user) {
+                    getdata();
+                    document.getElementById('registAndloginButton').innerHTML = "已登入";
+                    $("#login").hide();
+                    $("#logout").show();
+                    document.querySelector('.savewhich').style.display = 'flex';
+            } else {
+                    document.getElementById('registAndloginButton').innerHTML = "登入";
+                    $("#login").show();
+                    $("#logout").hide();
+            }
+            $("#button1").on("click", function () {
+                $(".side-image").animate({
+                    rotate: '+=360deg'
+                }, {
+                    step: function (now, fx) {
+                        $(".side-image").css('transform', 'rotate(' + now + ')');
+                    },
+                    duration: 2000
+                });
+                $("#cal_input").fadeOut();
+            });
+
+            var interpretation1 = ["","情緒安全感","溝通風格","價值觀","內在驅使天賦","事業方向","財務結構","意外事件","直覺潛意識","轉型挑戰","形象面具","優點","缺點"];
+            var interpretation2 = ["","母親的連結","學習優勢","所有情感有關的人格面","不受控的情況","幸運機會","社會規矩的適應度","個人突破口","現實的生命考驗","自我控制","","最佳表現","負面情緒"];
+            //var symbol = ['','☽︎','☿','♀','♂','♃','♄','♅','♆','♇','↥','☊','☋'];
+
+            $('.box1 .outer, .box1 .center').hover(
+                function() {
+                    if($(this).text()!=""){
+                        var boxId = $(this).attr('id');
+                        var boxoffset = $("#0").offset();
+                        $("#interpret").css("top",boxoffset.top);
+                        $("#interpret").html(interpretation1[boxId]);
+                        if(interpretation2[boxId]!=""){
+                            $("#interpret").append("<br>&<br>"+interpretation2[boxId]);
+                        }
+                        var originalWidth = $("#interpret").width();
+                        var originalHeight = $("#interpret").height();
+                        var finalWidth = originalWidth * 1.5;
+                        var finalHeight = originalHeight * 1.1;
+                        $("#interpret").css({
+                            width: finalWidth + 'px',
+                            height: finalHeight + 'px',
+                        });
+                        $("#interpret").show();
+                    }
+                },
+                function() {
+                    $("#interpret").css("width","auto");
+                    $("#interpret").css("height","auto");
+                    $("#interpret").hide();
+                }
+            );
+            $('.box3 .outer').hover(
+                function() {
+                    if($(this).text()!=""){
+                        var boxId = ($(this).attr('id')-13);
+                        var boxoffset = $("#13").offset();
+                        $("#interpret").css("top",boxoffset.top);
+                        $("#interpret").html(interpretation1[boxId]);
+                        if(interpretation2[boxId]!=""){
+                            $("#interpret").append("<br>&<br>"+interpretation2[boxId]);
+                        }
+                        var originalWidth = $("#interpret").width();
+                        var originalHeight = $("#interpret").height();
+                        var finalWidth = originalWidth * 1.5;
+                        var finalHeight = originalHeight * 1.2;
+                        $("#interpret").css({
+                            width: finalWidth + 'px',
+                            height: finalHeight + 'px',
+                        });
+                        $("#interpret").show();
+                    }
+                },
+                function() {
+                    $("#interpret").css("width","auto");
+                    $("#interpret").css("height","auto");
+                    $("#interpret").hide();
+                }
+            );
+        });
+        $("#button1").on("click", function () {
+            $("#cal_input").fadeOut();
+            $(".headline").hide();
+            $("#datatable").hide();
+            getdata();
+            document.getElementById('saveButton').style.display = 'flex';
+            document.getElementById('showButton').style.display = 'none';
+        });
+
+        $("#showButton").on("click", function () {
+            if(user){
+                document.getElementById('saveButton').style.display = 'flex';
+                document.getElementById('showButton').style.display = 'none';
+                $(".headline").hide();
+                $("#cal_input").fadeOut();
+                $("#datatable").hide();
+            }
+          });
+
+        $("#button2").on("click", function () {
+                $("#cal_input").slideDown();
+                $("#button2").hide();
+                $(".headline").show();
+                $("#datatable").show();
+                document.getElementById('saveButton').style.display = 'none';
+                document.getElementById('showButton').style.display = 'flex';
+                document.getElementById('result').innerHTML = '';
+                clear();
+                $("#button2").hide();
+                getdata();
+                $("#button2").css("display","none");
+          });
+
+    </script>  
+</body>
+</html>
+

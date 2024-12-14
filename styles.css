@@ -1,0 +1,74 @@
+
+      section{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        animation: meteor 5s linear infinite;
+        overflow: hidden;
+      }
+      span{
+          position: absolute; 
+          display: block;
+          top:50%;
+          left:50%;
+          height: 4px;
+          width: 4px;
+          background: #fff;
+          border-radius: 50%;
+          box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+          0 0 0 8px rgba(255, 255, 255, 0.1),
+          0 0 20px rgba(255, 255, 255, 1);
+          animation: animate 3s linear infinite;
+      }
+      span::before{
+        content: '';
+        position: absolute;
+        top:50%;
+        width:600px;
+        height: 1px;
+        transform: translateY(-50%);
+        background: linear-gradient(90deg,#fff,transparent);
+      }
+      @keyframes animate {
+        0%{
+          transform: rotate(315deg) translateX(0);
+          opacity: 1;
+        }
+        70%{
+          opacity: 1;
+        }
+        100%{
+          transform: rotate(315deg) translateX(-100vh);
+          opacity: 0;
+        }
+      }
+      span:nth-child(1){
+        top:0;
+        right:0;
+        left: initial;
+        animation-delay: 0s;
+        animation-duration: 1.5s;
+      }
+      span:nth-child(2){
+        top:0;
+        right:10vw;
+        left: initial;
+        animation-delay: 0.2s;
+        animation-duration: 3s;
+      }
+      span:nth-child(3){
+        top:10%;
+        right:60vw;
+        left: initial;
+        animation-delay: 0.4s;
+        animation-duration: 2s;
+      }
+      span:nth-child(4){
+        top:0;
+        right:25vw;
+        left: initial;
+        animation-delay: 0.3s;
+        animation-duration: 3s;
+      }
