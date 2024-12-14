@@ -787,11 +787,13 @@
             // 顯示表單，隱藏註冊/登入按鈕，顯示返回按鈕
             authFormContainer.style.display = 'block';
             registLoginButton.innerHTML = '返回';
+            $('#datatable').hide();
             $('.container').hide();
         } else {
             // 收回表單，顯示註冊/登入按鈕，隱藏返回按鈕
             authFormContainer.style.display = 'none';
             registLoginButton.innerHTML = '登入';
+            $('#datatable').show();
             $('.container').show();
             if(user){
                 registLoginButton.innerHTML = '已登入';
